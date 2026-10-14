@@ -1,15 +1,29 @@
 
 === Miscellaneous Non-RV23 Unprivileged Extensions
 
-==== Zfinx Float in Integer Regs
+==== Zfinx Single-Precision FP in Integer Registers
 
-Zfinx replaces the F extension with a similar set of instructions that operate on x registers instead of f registers.  Zdinx and Zhinx are similar.
+Zfinx uses the integer register file and excludes F's floating-point loads, stores, and register-transfer instructions. The test plan covers 22 instructions on RV32 and 26 on RV64. The four additional RV64 instructions convert between binary32 and signed or unsigned 64-bit integers.
 
-[[t-Zfinx-coverpoints]]
-.Zfinx Coverpoints
-//,===
-//include::{testplansdir}/Zfinx.adoc[]
-//,===
+Each testcase checks the full XLEN destination and fflags, including when the destination is x0. Source values are loaded through integer instructions. Register coverpoints include x0 and all source/destination overlaps; aliased sources are initialized once.
+
+The cp_finx_rsN_edges coverpoints use F's binary32 edges. Their rounding variants and cr_finx_rs1_rsN_edges crosses exercise every legal static rounding mode and dynamic rounding. cp_csr_frm covers all five legal dynamic frm values. Reserved rounding encodings have no required result in this suite.
+
+cp_finx_upper_rsN applies only to RV64 and tests input bits 63:32 with zero, all ones, and both alternating patterns. Full-width signatures check that binary32 results are sign-extended rather than NaN-boxed. Integer conversion sources instead use cp_rs1_edges.
+
+cp_finx_directed_<instruction> defines bins for the operands in the directed-case table. The tests cross these operands with five static and five dynamic rounding modes where rounding applies. These cases distinguish fused from separately rounded multiplication, tininess after rounding, rounding ties, conversion overflow and saturation, NaN comparison behavior, signed zeros, and sign-injection payload preservation.
+
+include::{testplansdir}/Zfinx.adoc[]
+
+include::norm/Zfinx_norm_rules.adoc[]
+
+===== Machine-Mode Implications
+
+ZfinxSm boots in M-mode. It checks FS and misa.F/D/Q as read-only zero and confirms that floating-point computation and CSR access remain available with FS off.
+
+include::{testplansdir}/priv/ZfinxSm.adoc[]
+
+include::norm/ZfinxSm_norm_rules.adoc[]
 
 ==== Zdinx Double in Integer Regs
 

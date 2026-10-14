@@ -1,7 +1,7 @@
 
 === Floating-Point Extensions
 
-Supporting floating-point involves enabling at least the F extension.  Other extensions depend on F.  The coverpoints are specified in the following sections. Some tests only apply when multiple extensions are supported.
+Floating-point computations use either the floating-point register extensions beginning with F or the integer-register Zfinx family. The coverpoints are specified in the following sections. Some tests only apply when multiple extensions are supported.
 
 The basic coverpoints are defined in <<t-unprivileged-coverpoints>>. Modified coverpoints for floating-point instructions are defined in <<t-float-modified-coverpoints>>. D and H suffixes apply to double-precision and half-precision floating-point instructions, respectively.
 

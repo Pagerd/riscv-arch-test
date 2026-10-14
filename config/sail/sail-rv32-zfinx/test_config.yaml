@@ -1,0 +1,8 @@
+# SPDX-License-Identifier: Apache-2.0
+name: sail-rv32-zfinx
+compiler_exe: riscv64-unknown-elf-gcc
+objdump_exe: riscv64-unknown-elf-objdump
+ref_model_exe: sail_riscv_sim
+udb_config: sail-rv32-zfinx.yaml
+linker_script: ../sail-rv32-max/link.ld
+dut_include_dir: .
